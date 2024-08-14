@@ -15,7 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<RegisterPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/transaction/:id" element={<TransactionPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

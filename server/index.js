@@ -1,10 +1,11 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 
-import { mergedResolvers } from "./src/resolvers/index.js";
+import  mergedResolvers from "./src/resolvers/index.js";
+import mergedTypeDefs from "./src/typeDefs/index.js";
 
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: mergedTypeDefs,
   resolvers: mergedResolvers,
 });
 

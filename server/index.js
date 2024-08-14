@@ -55,7 +55,7 @@ const startServer = async () => {
     await server.start();
 
     app.use(
-      "/",
+      "/graphql",
       cors({
         origin: config.CLIENT_URL,
         credentials: true,

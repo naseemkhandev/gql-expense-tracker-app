@@ -1,5 +1,12 @@
+import { transactions } from "../data/index.js";
+
 const transactionResolver = {
-  Query: {},
+  Query: {
+    transactions: () => {
+      return transactions;
+    },
+  },
+
   Mutation: {},
 };
 

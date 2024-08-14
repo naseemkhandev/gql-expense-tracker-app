@@ -6,8 +6,6 @@ const userResolver = {
       return users;
     },
   },
-
-  Mutation: {},
 };
 
 export default userResolver;

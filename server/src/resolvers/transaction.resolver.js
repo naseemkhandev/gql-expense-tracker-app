@@ -28,7 +28,48 @@ const transactionResolver = {
     },
   },
 
-  Mutation: {},
+  Mutation: {
+    createTransaction: async (_, { input }, context) => {
+      try {
+        const newTransaction = new Transaction({
+          ...input,
+          userId: context.getUser()._id,
+        });
+
+        await newTransaction.save();
+        return newTransaction;
+      } catch (error) {
+        console.error("Error in creating transaction: ", error);
+        throw new Error(error);
+      }
+    },
+    updateTransaction: async (_, { input }) => {
+      try {
+        const updatedTransaction = await Transaction.findByIdAndUpdate(
+          input.transactionId,
+          input,
+          { new: true }
+        );
+
+        if (!updatedTransaction) throw new Error("Transaction not found");
+        return updatedTransaction;
+      } catch (error) {
+        console.error("Error in updating transaction: ", error);
+        throw new Error(error);
+      }
+    },
+    deleteTransaction: async (_, { id }) => {
+      try {
+        const deletedTransaction = await Transaction.findByIdAndDelete(id);
+
+        if (!deletedTransaction) throw new Error("Transaction not found");
+        return deletedTransaction;
+      } catch (error) {
+        console.error("Error in deleting transaction: ", error);
+        throw new Error(error);
+      }
+    },
+  },
 };
 
 export default transactionResolver;

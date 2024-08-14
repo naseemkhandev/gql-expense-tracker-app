@@ -13,29 +13,38 @@ import connectToDB from "./src/config/connectToDB.js";
 import mergedResolvers from "./src/resolvers/index.js";
 import mergedTypeDefs from "./src/typeDefs/index.js";
 
-const app = express();
-const httpServer = http.createServer(app);
+const startServer = async () => {
+  try {
+    const app = express();
+    const httpServer = http.createServer(app);
 
-const server = new ApolloServer({
-  typeDefs: mergedTypeDefs,
-  resolvers: mergedResolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-});
+    const server = new ApolloServer({
+      typeDefs: mergedTypeDefs,
+      resolvers: mergedResolvers,
+      plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    });
 
-await server.start();
+    await server.start();
 
-app.use(
-  "/",
-  cors(),
-  express.json(),
-  expressMiddleware(server, {
-    context: async ({ req }) => ({ req }),
-  })
-);
+    app.use(
+      "/",
+      cors(),
+      express.json(),
+      expressMiddleware(server, {
+        context: async ({ req }) => ({ req }),
+      })
+    );
 
-await new Promise((resolve) => {
-  connectToDB();
-  httpServer.listen({ port: config.PORT }, resolve);
-});
+    await connectToDB();
 
-console.log(`🚀 Server ready at PORT ${config.PORT}`.bgWhite);
+    await new Promise((resolve) =>
+      httpServer.listen({ port: config.PORT }, resolve)
+    );
+
+    console.log(`🚀 Server ready at PORT ${config.PORT}`.bgWhite);
+  } catch (error) {
+    console.error("Error starting server:", error);
+  }
+};
+
+startServer();

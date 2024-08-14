@@ -34,7 +34,24 @@ const authResolver = {
         throw new Error(error.message || "Internal server error!");
       }
     },
-    login: async (_, { input }) => {},
+
+    login: async (_, { input }, context) => {
+      try {
+        const { username, password } = input;
+
+        const { user } = await context.authenticate("graphql-local", {
+          username,
+          password,
+        });
+
+        await context.login(user);
+        return user;
+      } catch (error) {
+        console.error("Error logging in user:", error);
+        throw new Error(error.message || "Internal server error!");
+      }
+    },
+
     logout: async () => {},
   },
 };

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import RadioButton from "../components/RadioButton";
-import InputField from "../components/InputField";
+
+import InputField from "../components/inputField";
+import RadioButton from "../components/radioButton";
 
 const RegisterPage = () => {
   const [signUpData, setSignUpData] = useState({

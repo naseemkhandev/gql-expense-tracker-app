@@ -17,11 +17,13 @@ import connectToDB from "./src/config/connectToDB.js";
 
 import mergedResolvers from "./src/resolvers/index.js";
 import mergedTypeDefs from "./src/typeDefs/index.js";
+import configurePassport from "./src/config/passport.config.js";
 
 const startServer = async () => {
   try {
     const app = express();
     const httpServer = http.createServer(app);
+    configurePassport();
 
     const MongoDBStore = connectMongo(session);
     const store = new MongoDBStore({

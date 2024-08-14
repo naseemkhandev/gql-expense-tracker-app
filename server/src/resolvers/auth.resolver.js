@@ -30,7 +30,7 @@ const authResolver = {
         await context.login(user);
         return user;
       } catch (error) {
-        console.error("Error registering user:", error);
+        console.error("Error registering user: ", error);
         throw new Error(error.message || "Internal server error!");
       }
     },
@@ -47,12 +47,24 @@ const authResolver = {
         await context.login(user);
         return user;
       } catch (error) {
-        console.error("Error logging in user:", error);
+        console.error("Error logging in user: ", error);
         throw new Error(error.message || "Internal server error!");
       }
     },
 
-    logout: async () => {},
+    logout: async (_, __, context) => {
+      try {
+        await context.logout();
+        req.session.destroy((err) => {
+          if (err) throw err;
+        });
+        res.clearCookie("connect.sid");
+        return { message: "Logged out Successfully" };
+      } catch (error) {
+        console.error("Error logging out user: ", error);
+        throw new Error(error.message || "Internal server error!");
+      }
+    },
   },
 };
 

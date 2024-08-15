@@ -1,4 +1,5 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config();
 
 const _config = {
   PORT: process.env.PORT || 4000,

@@ -27,7 +27,7 @@ const startServer = async () => {
 
     const MongoDBStore = connectMongo(session);
     const store = new MongoDBStore({
-      uri: config.MONGODB_URI,
+      uri: config.MONGO_URI,
       collection: "sessions",
     });
 

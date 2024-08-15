@@ -12,17 +12,23 @@ const Cards = () => {
       <p className="my-10 text-5xl font-bold text-center">History</p>
 
       {loading ? (
-        <LoaderIcon className="w-10 h-10 p-2 mx-auto text-center text-white bg-gray-800 rounded-full animate-spin" />
+        <LoaderIcon className="w-10 h-10 p-2 mx-auto mt-40 text-center text-white rounded-full animate-spin" />
       ) : (
         <div className="grid justify-start w-full grid-cols-1 gap-4 mb-20 md:grid-cols-2 lg:grid-cols-3">
           {data?.transactions.map((transaction) => (
             <Card
               key={transaction._id}
-              transaction={transaction}
               cardType={transaction.category}
+              {...transaction}
             />
           ))}
         </div>
+      )}
+
+      {!loading && data?.transactions.length === 0 && (
+        <p className="pb-40 text-2xl font-bold text-center">
+          No transactions history found.
+        </p>
       )}
     </div>
   );

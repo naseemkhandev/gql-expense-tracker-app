@@ -5,7 +5,9 @@ import { CREATE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
 import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 
 const TransactionForm = () => {
-  const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION);
+  const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION, {
+    refetchQueries: ["GetTransactions"],
+  });
   const { data: { authUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
   const handleSubmit = async (e) => {

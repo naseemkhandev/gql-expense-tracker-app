@@ -1,9 +1,13 @@
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import InputField from "../components/inputField";
+import { LOGIN } from "../graphql/mutations/user.mutation";
 
 const LoginPage = () => {
+  const [login, { loading }] = useMutation(LOGIN);
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",
@@ -17,9 +21,21 @@ const LoginPage = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginData);
+    const loading = toast.loading("Logging in...");
+    try {
+      await login({
+        variables: {
+          input: loginData,
+        },
+      });
+      toast.success("Login successful");
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      toast.dismiss(loading);
+    }
   };
 
   return (
@@ -53,9 +69,10 @@ const LoginPage = () => {
               <div>
                 <button
                   type="submit"
-                  className="w-full p-2 text-white transition-colors duration-300 bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-50 disabled:cursor-not-allowed "
+                  disabled={loading}
+                  className="w-full p-2 text-white transition-colors duration-300 bg-black rounded-md hover:bg-gray-800 focus:outline-none focus:bg-black focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 disabled:opacity-70 disabled:cursor-not-allowed "
                 >
-                  Login
+                  {loading ? "Loading..." : "Login"}
                 </button>
               </div>
             </form>

@@ -11,3 +11,20 @@ export const REGISTER = gql`
     }
   }
 `;
+
+export const LOGIN = gql`
+  mutation login($input: LoginInput!) {
+    login(input: $input) {
+      username
+      password
+    }
+  }
+`;
+
+export const LOGOUT = gql`
+  mutation logout {
+    logout {
+      message
+    }
+  }
+`;

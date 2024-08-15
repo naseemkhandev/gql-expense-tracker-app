@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 
@@ -8,10 +8,12 @@ import TransactionForm from "../components/transactionForm";
 import toast from "react-hot-toast";
 import { MdLogout } from "react-icons/md";
 import { LOGOUT } from "../graphql/mutations/user.mutation";
+import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
+  const { data } = useQuery(GET_AUTHENTICATED_USER);
   const [logout, { loading }] = useMutation(LOGOUT, {
     refetchQueries: ["GetAuthenticatedUser"],
     onCompleted: () => window.location.reload(),
@@ -61,7 +63,7 @@ const HomePage = () => {
             Spend wisely, track wisely
           </p>
           <img
-            src={"https://tecdn.b-cdn.net/img/new/avatars/2.webp"}
+            src={data?.authUser.profilePic}
             className="border rounded-full cursor-pointer w-11 h-11"
             alt="Avatar"
           />

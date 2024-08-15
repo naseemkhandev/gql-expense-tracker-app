@@ -58,7 +58,7 @@ const authResolver = {
         context.req.session.destroy((err) => {
           if (err) throw err;
         });
-        context. res.clearCookie("connect.sid");
+        context.res.clearCookie("connect.sid");
         return { message: "Logged out Successfully" };
       } catch (error) {
         console.error("Error logging out user: ", error);

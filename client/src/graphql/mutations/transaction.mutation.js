@@ -4,8 +4,9 @@ export const CREATE_TRANSACTION = gql`
   mutation CreateTransaction($input: CreateTransactionInput!) {
     createTransaction(input: $input) {
       _id
+      userId
       amount
-      type
+      paymentType
       category
       description
       date
@@ -18,8 +19,9 @@ export const UPDATE_TRANSACTION = gql`
   mutation UpdateTransaction($input: UpdateTransactionInput!) {
     updateTransaction(input: $input) {
       _id
+      userId
       amount
-      type
+      paymentType
       category
       description
       date

@@ -1,10 +1,12 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import toast from "react-hot-toast";
 
 import { CREATE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
+import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 
 const TransactionForm = () => {
   const [createTransaction, { loading }] = useMutation(CREATE_TRANSACTION);
+  const { data: { authUser } = {} } = useQuery(GET_AUTHENTICATED_USER);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,17 +20,22 @@ const TransactionForm = () => {
       amount: parseFloat(formData.get("amount")),
       location: formData.get("location"),
       date: formData.get("date"),
+      userId: authUser._id,
     };
 
-    const loading = toast.loading("Adding transaction...");
+    const loadingToast = toast.loading("Adding transaction...");
     try {
-      await createTransaction({ variables: { transactionData } });
+      await createTransaction({
+        variables: {
+          input: transactionData,
+        },
+      });
       form.reset();
       toast.success("Transaction added successfully");
     } catch (error) {
       toast.error(error.message);
     } finally {
-      toast.dismiss(loading);
+      toast.dismiss(loadingToast);
     }
   };
 
@@ -165,7 +172,7 @@ const TransactionForm = () => {
             name="date"
             id="date"
             className="appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none
-						 focus:bg-white"
+                         focus:bg-white"
             placeholder="Select date"
           />
         </div>

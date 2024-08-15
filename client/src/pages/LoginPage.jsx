@@ -1,13 +1,15 @@
-import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 import InputField from "../components/inputField";
 import { LOGIN } from "../graphql/mutations/user.mutation";
 
 const LoginPage = () => {
-  const [login, { loading }] = useMutation(LOGIN);
+  const [login, { loading }] = useMutation(LOGIN, {
+    refetchQueries: ["GetAuthenticatedUser"],
+  });
   const [loginData, setLoginData] = useState({
     username: "",
     password: "",

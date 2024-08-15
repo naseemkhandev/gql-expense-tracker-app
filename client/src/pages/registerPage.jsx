@@ -8,7 +8,9 @@ import RadioButton from "../components/radioButton";
 import { REGISTER } from "../graphql/mutations/user.mutation";
 
 const RegisterPage = () => {
-  const [register, { loading }] = useMutation(REGISTER);
+  const [register, { loading }] = useMutation(REGISTER, {
+    refetchQueries: ["GetAuthenticatedUser"],
+  });
   const [signUpData, setSignUpData] = useState({
     name: "",
     username: "",

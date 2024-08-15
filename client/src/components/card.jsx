@@ -18,7 +18,16 @@ const categoryColorMap = {
   // Add more categories and corresponding color classes as needed
 };
 
-const Card = ({ cardType, _id }) => {
+const Card = ({
+  cardType,
+  _id,
+  profilePic,
+  description,
+  paymentType,
+  amount,
+  location,
+  date,
+}) => {
   const [deleteTransaction, { loading }] = useMutation(DELETE_TRANSACTION, {
     refetchQueries: [{ query: GET_TRANSACTIONS }],
   });
@@ -43,9 +52,12 @@ const Card = ({ cardType, _id }) => {
 
   return (
     <div className={`rounded-md p-4 bg-gradient-to-br ${cardClass}`}>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 capitalize">
         <div className="flex flex-row items-center justify-between">
-          <h2 className="text-lg font-bold text-white">Saving</h2>
+          <h2 className="text-lg font-bold text-white capitalize">
+            {cardType}
+          </h2>
+
           <div className="flex items-center gap-2">
             {loading ? (
               <LoaderIcon className="w-4 h-4 animate-spin" />
@@ -56,33 +68,44 @@ const Card = ({ cardType, _id }) => {
               />
             )}
 
-            <Link to={`/transaction/123`}>
+            <Link to={`/transaction/${_id}`}>
               <HiPencilAlt className="cursor-pointer" size={20} />
             </Link>
           </div>
         </div>
-        <p className="flex items-center gap-1 text-white">
+
+        <p className="flex items-center gap-1 text-white capitalize">
           <BsCardText />
-          Description: Salary
+          Description: {description}
         </p>
+
         <p className="flex items-center gap-1 text-white">
           <MdOutlinePayments />
-          Payment Type: Cash
+          Payment Type: {paymentType}
         </p>
+
         <p className="flex items-center gap-1 text-white">
           <FaSackDollar />
-          Amount: $150
+          Amount: ${amount}
         </p>
+
         <p className="flex items-center gap-1 text-white">
           <FaLocationDot />
-          Location: New York
+          Location: {location}
         </p>
+
         <div className="flex items-center justify-between">
-          <p className="text-xs font-bold text-black">21 Sep, 2001</p>
+          <p className="text-sm font-bold text-white">
+            {new Date(parseInt(date)).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </p>
           <img
-            src={"https://tecdn.b-cdn.net/img/new/avatars/2.webp"}
+            src={profilePic}
             className="w-8 h-8 border rounded-full"
-            alt=""
+            alt="Avatar"
           />
         </div>
       </div>

@@ -6,6 +6,7 @@ const _config = {
   MONGO_URI: process.env.MONGO_URI,
   SESSION_SECRET: process.env.SESSION_SECRET,
   CLIENT_URL: process.env.CLIENT_URL,
+  NODE_ENV: process.env.NODE_ENV,
 };
 
 export const config = Object.freeze(_config);

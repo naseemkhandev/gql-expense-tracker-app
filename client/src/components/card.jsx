@@ -5,11 +5,12 @@ import { FaSackDollar } from "react-icons/fa6";
 import { FaTrash } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
 import { Link } from "react-router-dom";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 
 import { DELETE_TRANSACTION } from "../graphql/mutations/transaction.mutation";
 import { GET_TRANSACTIONS } from "../graphql/queries/transaction.query";
 import toast, { LoaderIcon } from "react-hot-toast";
+import { GET_AUTHENTICATED_USER } from "../graphql/queries/user.query";
 
 const categoryColorMap = {
   saving: "from-green-700 to-green-400",
@@ -21,7 +22,6 @@ const categoryColorMap = {
 const Card = ({
   cardType,
   _id,
-  profilePic,
   description,
   paymentType,
   amount,
@@ -31,6 +31,7 @@ const Card = ({
   const [deleteTransaction, { loading }] = useMutation(DELETE_TRANSACTION, {
     refetchQueries: [{ query: GET_TRANSACTIONS }],
   });
+  const { data } = useQuery(GET_AUTHENTICATED_USER);
 
   const cardClass = categoryColorMap[cardType];
 
@@ -103,7 +104,7 @@ const Card = ({
             })}
           </p>
           <img
-            src={profilePic}
+            src={data?.authUser?.profilePic}
             className="w-8 h-8 border rounded-full"
             alt="Avatar"
           />

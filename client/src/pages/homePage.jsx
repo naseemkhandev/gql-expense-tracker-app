@@ -14,7 +14,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const HomePage = () => {
   const { data } = useQuery(GET_AUTHENTICATED_USER);
-  const [logout, { loading }] = useMutation(LOGOUT, {
+  const [logout, { loading, client }] = useMutation(LOGOUT, {
     refetchQueries: ["GetAuthenticatedUser"],
     onCompleted: () => window.location.reload(),
   });
@@ -48,6 +48,8 @@ const HomePage = () => {
     try {
       await logout();
       toast.success("Logout successful");
+      // Clear the cache
+      client.clearStore();
     } catch (error) {
       toast.error(error.message);
     } finally {

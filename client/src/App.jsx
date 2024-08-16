@@ -11,7 +11,9 @@ import TransactionPage from "./pages/transactionPage";
 import { GET_AUTHENTICATED_USER } from "./graphql/queries/user.query";
 
 function App() {
-  const { data } = useQuery(GET_AUTHENTICATED_USER);
+  const { data, loading } = useQuery(GET_AUTHENTICATED_USER);
+
+  if (loading) return null;
 
   return (
     <>
